@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Abdellah Dighab — AI Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f4f6fa; --ink: #0a0f1e; --muted: #5a6480; --accent: #1a3a6b;
+      --accent-light: #d6e2f5; --border: #c8d3e8; --white: #ffffff;
+      --serif: 'DM Serif Display', Georgia, serif; --sans: 'DM Sans', system-ui, sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-weight: 300; line-height: 1.7; overflow-x: hidden; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 4rem; background: rgba(244,246,250,0.92); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+    .nav-logo { font-family: var(--serif); font-size: 1.1rem; color: var(--ink); text-decoration: none; letter-spacing: 0.02em; }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* LANG SWITCHER */
+    .lang-switcher { display: flex; gap: 0.2rem; background: var(--accent-light); border-radius: 3px; padding: 0.2rem; }
+    .lang-btn { font-family: var(--sans); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; border: none; background: transparent; color: var(--muted); padding: 0.3rem 0.65rem; border-radius: 2px; cursor: pointer; transition: all 0.2s; }
+    .lang-btn:hover { color: var(--accent); }
+    .lang-btn.active { background: var(--accent); color: var(--white); }
+
+    /* SECTIONS */
+    section { padding: 7rem 4rem; max-width: 1100px; margin: 0 auto; }
+
+    /* HERO */
+    #hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 8rem; max-width: 100%; padding-left: 10vw; padding-right: 10vw; position: relative; }
+    .hero-eyebrow { font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.2s forwards; }
+    h1.hero-name { font-family: var(--serif); font-size: clamp(3.5rem, 8vw, 7rem); line-height: 1.05; letter-spacing: -0.02em; color: var(--ink); opacity: 0; animation: fadeUp 0.9s 0.4s forwards; }
+    h1.hero-name em { font-style: italic; color: var(--accent); }
+    .hero-tagline { margin-top: 2rem; max-width: 560px; font-size: 1.1rem; color: var(--muted); font-weight: 300; opacity: 0; animation: fadeUp 0.9s 0.6s forwards; }
+    .hero-cta { margin-top: 3rem; display: flex; gap: 1rem; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.9s 0.8s forwards; }
+    .btn { display: inline-block; padding: 0.75rem 2rem; font-family: var(--sans); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.25s; cursor: pointer; }
+    .btn-primary { background: var(--ink); color: var(--white); border: 1px solid var(--ink); }
+    .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+    .btn-outline { background: transparent; color: var(--ink); border: 1px solid var(--border); }
+    .btn-outline:hover { border-color: var(--ink); }
+    .hero-scroll { position: absolute; bottom: 3rem; left: 10vw; display: flex; align-items: center; gap: 0.75rem; font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); opacity: 0; animation: fadeIn 1s 1.4s forwards; }
+    .hero-scroll-line { width: 40px; height: 1px; background: var(--muted); animation: expandLine 1.2s 1.6s both; }
+
+    /* DIVIDER */
+    .divider { width: 100%; height: 1px; background: var(--border); max-width: 1100px; margin: 0 auto; }
+
+    /* SECTION LABEL */
+    .section-label { font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent); margin-bottom: 3.5rem; display: flex; align-items: center; gap: 1rem; }
+    .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+    /* ABOUT */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .about-photo-wrap { display: flex; justify-content: center; margin-bottom: 2rem; }
+    .about-photo { width: 200px; height: 200px; border-radius: 50%; object-fit: cover; object-position: top center; border: 3px solid var(--border); box-shadow: 0 8px 32px rgba(26,58,107,0.12); transition: transform 0.3s, box-shadow 0.3s; }
+    .about-photo:hover { transform: scale(1.04); box-shadow: 0 16px 48px rgba(26,58,107,0.2); }
+    .about-heading { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.2rem); line-height: 1.15; letter-spacing: -0.01em; }
+    .about-heading em { font-style: italic; color: var(--accent); }
+    .about-text { color: var(--muted); font-size: 0.95rem; }
+    .about-text p + p { margin-top: 1rem; }
+    .about-stats { margin-top: 2.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; border-top: 1px solid var(--border); padding-top: 2rem; }
+    .stat-num { font-family: var(--serif); font-size: 2.2rem; color: var(--ink); line-height: 1; }
+    .stat-label { font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 0.25rem; }
+
+    /* SKILLS */
+    #skills { background: #0a0f1e; color: var(--white); max-width: 100%; padding: 7rem 10vw; }
+    #skills .section-label { color: #7aa7e8; }
+    #skills .section-label::after { background: rgba(255,255,255,0.15); }
+    .skills-heading { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 4rem; color: var(--white); }
+    .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1px; background: rgba(255,255,255,0.08); }
+    .skill-card { background: #0a0f1e; padding: 2rem 1.75rem; transition: background 0.25s; }
+    .skill-card:hover { background: #112045; }
+    .skill-category { font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; color: #7aa7e8; margin-bottom: 1rem; }
+    .skill-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .skill-tag { font-size: 0.8rem; color: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.15); padding: 0.2rem 0.65rem; border-radius: 1px; transition: all 0.2s; }
+    .skill-tag:hover { border-color: #7aa7e8; color: var(--white); }
+
+    /* EXPERIENCE */
+    .exp-list { display: flex; flex-direction: column; gap: 0; }
+    .exp-item { display: grid; grid-template-columns: 200px 1fr; gap: 3rem; padding: 2.5rem 0; border-bottom: 1px solid var(--border); }
+    .exp-item:first-child { border-top: 1px solid var(--border); }
+    .exp-date { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.06em; padding-top: 0.25rem; }
+    .exp-company { font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; }
+    .exp-role { font-family: var(--serif); font-size: 1.4rem; margin-bottom: 0.75rem; line-height: 1.2; }
+    .exp-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.75; }
+    .exp-tags { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .exp-tag { font-size: 0.72rem; background: var(--accent-light); color: var(--accent); padding: 0.15rem 0.6rem; border-radius: 1px; letter-spacing: 0.05em; }
+
+    /* PROJECTS */
+    .projects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .project-card { border: 1px solid var(--border); padding: 2rem; background: var(--white); transition: transform 0.25s, box-shadow 0.25s; text-decoration: none; color: inherit; display: block; }
+    .project-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+    .project-lang { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
+    .project-name { font-family: var(--serif); font-size: 1.3rem; margin-bottom: 0.5rem; line-height: 1.2; }
+    .project-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+    .project-arrow { margin-top: 1.5rem; font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); display: flex; align-items: center; gap: 0.5rem; transition: gap 0.2s; }
+    .project-card:hover .project-arrow { gap: 0.85rem; }
+
+    /* CONTACT */
+    #contact { background: #d6e2f5; max-width: 100%; padding: 7rem 10vw; text-align: center; }
+    .contact-heading { font-family: var(--serif); font-size: clamp(2.5rem, 6vw, 5rem); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+    .contact-sub { color: var(--muted); font-size: 1rem; max-width: 480px; margin: 0 auto 3rem; }
+    .contact-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+
+    /* FOOTER */
+    footer { padding: 2rem 4rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 0.75rem; color: var(--muted); max-width: 100%; }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes expandLine { from { width: 0; } to { width: 40px; } }
+    .reveal { opacity: 1; transform: translateY(0); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .js-loaded .reveal { opacity: 0; transform: translateY(20px); }
+    .js-loaded .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; flex-wrap: wrap; gap: 0.75rem; }
+      .nav-links { display: none; }
+      .lang-switcher { display: flex; }
+      section { padding: 5rem 1.5rem; }
+      #hero { padding: 8rem 1.5rem 5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      #skills, #contact { padding: 5rem 1.5rem; }
+      footer { padding: 2rem 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">Abdellah Dighab</a>
+    <ul class="nav-links">
+      <li><a href="#about"      data-i18n="nav_about">About</a></li>
+      <li><a href="#skills"     data-i18n="nav_skills">Skills</a></li>
+      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
+      <li><a href="#projects"   data-i18n="nav_projects">Projects</a></li>
+      <li><a href="#contact"    data-i18n="nav_contact">Contact</a></li>
+      <li>
+        <div class="lang-switcher">
+          <button class="lang-btn active" onclick="setLang('en')">EN</button>
+          <button class="lang-btn"        onclick="setLang('fr')">FR</button>
+          <button class="lang-btn"        onclick="setLang('it')">IT</button>
+        </div>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-eyebrow" data-i18n="hero_eyebrow">AI Engineer · Researcher · Builder</p>
+    <h1 class="hero-name">Abdellah<br><em>Dighab</em></h1>
+    <p class="hero-tagline" data-i18n="hero_tagline">Building intelligent systems where mathematics meets real-world impact — from geological AI to clinical imaging, across three continents.</p>
+    <div class="hero-cta">
+      <a href="#projects" class="btn btn-primary" data-i18n="hero_cta_projects">View Projects</a>
+      <a href="#contact"  class="btn btn-outline"  data-i18n="hero_cta_contact">Get in Touch</a>
+    </div>
+    <div class="hero-scroll">
+      <span class="hero-scroll-line"></span>
+      <span data-i18n="hero_scroll">Scroll to explore</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <p class="section-label reveal" data-i18n="nav_about">About</p>
+    <div class="about-grid reveal">
+      <div class="about-photo-wrap">
+        <img src="images/photo.jpeg" alt="Abdellah Dighab" class="about-photo">
+      </div>
+      <div>
+        <h2 class="about-heading">
+          <span data-i18n="about_h1">Curious mind.</span><br>
+          <em data-i18n="about_h2">Rigorous</em> <span data-i18n="about_h3">builder.</span>
+        </h2>
+        <div class="about-stats">
+          <div><div class="stat-num">4+</div><div class="stat-label" data-i18n="stat_exp">Years of experience</div></div>
+          <div><div class="stat-num">3</div><div class="stat-label" data-i18n="stat_countries">Countries worked in</div></div>
+          <div><div class="stat-num">1</div><div class="stat-label" data-i18n="stat_pub">Scientific publication</div></div>
+          <div><div class="stat-num">∞</div><div class="stat-label" data-i18n="stat_problems">Problems to solve</div></div>
+        </div>
+      </div>
+      <div class="about-text">
+        <p data-i18n="about_p1">I'm an AI Engineer driven by a deep passion for mathematics, computing, and their applications to health and science. I thrive at the intersection of research and engineering — turning complex data into meaningful, deployable solutions.</p>
+        <p data-i18n="about_p2">From developing real-time ML systems for oil drilling operations in France, to working on neurological imaging at Brigham and Women's Hospital in Boston, I've had the privilege of applying AI where precision genuinely matters.</p>
+        <p data-i18n="about_p3">I believe the best innovations come from collaboration — interdisciplinary, multicultural, and grounded in curiosity. I'm always looking to contribute to discoveries that change how we work, heal, and understand the world.</p>
+        <br>
+        <a href="https://github.com/adwge99" class="btn btn-outline" target="_blank" rel="noopener" data-i18n="about_github">GitHub Profile →</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <p class="section-label reveal" data-i18n="skills_label">Skills &amp; Technologies</p>
+    <h2 class="skills-heading reveal"><span data-i18n="skills_h1">A full-stack</span><br><span data-i18n="skills_h2">AI toolkit.</span></h2>
+    <div class="skills-grid reveal">
+      <div class="skill-card">
+        <div class="skill-category" data-i18n="sk_ml">Machine Learning</div>
+        <ul class="skill-list">
+          <li class="skill-tag">PyTorch</li><li class="skill-tag">Scikit-learn</li>
+          <li class="skill-tag">YOLOv8</li><li class="skill-tag">BERT / NLP</li>
+          <li class="skill-tag">Time Series</li><li class="skill-tag">Computer Vision</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="skill-category" data-i18n="sk_data">Data &amp; Engineering</div>
+        <ul class="skill-list">
+          <li class="skill-tag">Python</li><li class="skill-tag">SQL / MySQL</li>
+          <li class="skill-tag">CouchDB</li><li class="skill-tag" data-i18n="sk_pipelines">Data Pipelines</li>
+          <li class="skill-tag" data-i18n="sk_realtime">Real-time Processing</li><li class="skill-tag">Pandas / NumPy</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="skill-category" data-i18n="sk_viz">Visualization &amp; Apps</div>
+        <ul class="skill-list">
+          <li class="skill-tag">Streamlit</li><li class="skill-tag">Dash</li>
+          <li class="skill-tag">PyQT</li><li class="skill-tag">Open3D (3D)</li>
+          <li class="skill-tag">OpenCV</li><li class="skill-tag">Tkinter</li>
+        </ul>
+      </div>
+      <div class="skill-card">
+        <div class="skill-category" data-i18n="sk_domains">Domains</div>
+        <ul class="skill-list">
+          <li class="skill-tag" data-i18n="sk_clinical">Clinical AI</li>
+          <li class="skill-tag" data-i18n="sk_geo">Geoscience AI</li>
+          <li class="skill-tag" data-i18n="sk_drug">Drug Discovery</li>
+          <li class="skill-tag">NLP-to-SQL</li>
+          <li class="skill-tag" data-i18n="sk_mri">MRI Segmentation</li>
+          <li class="skill-tag" data-i18n="sk_holo">Holographic Systems</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <p class="section-label reveal" data-i18n="nav_experience">Experience</p>
+    <div class="exp-list">
+
+      <div class="exp-item reveal">
+        <div class="exp-date">Sep 2021 – Sep 2025<br><br>Dijon, France</div>
+        <div>
+          <div class="exp-company">Ingen Innovation Geosciences</div>
+          <div class="exp-role" data-i18n="e1_role">AI Engineer — Junior Lead Software Engineer</div>
+          <div class="exp-desc" data-i18n="e1_desc">Led the development of an AI system applied to MudLogging, including ML models for directional drilling prediction and real-time geological pattern recognition. Designed and deployed a full-stack MudLogging visualization platform across three active drilling sites. Built HICA, a 3D geological web visualization app powered by Open3D, Python, and MySQL.</div>
+          <div class="exp-tags">
+            <span class="exp-tag">Python</span><span class="exp-tag">Machine Learning</span>
+            <span class="exp-tag">Streamlit</span><span class="exp-tag">Dash</span>
+            <span class="exp-tag">MySQL</span><span class="exp-tag">Open3D</span><span class="exp-tag">Real-time AI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-date">May 2024 – Sep 2024<br><br>Boston, MA, USA</div>
+        <div>
+          <div class="exp-company">Brigham and Women's Hospital — CNI</div>
+          <div class="exp-role" data-i18n="e2_role">AI Research Intern — Clinical Data</div>
+          <div class="exp-desc" data-i18n="e2_desc">Contributed to a multiple sclerosis (MS) lesion tracking workflow, improving MRI segmentation precision through expert-validated crowd contributions. Conducted a feasibility study for an NLP-to-SQL system (SPINE) enabling clinicians to query databases in natural language. Used Python, CouchDB, JSON, and BERT in a fully remote collaborative environment.</div>
+          <div class="exp-tags">
+            <span class="exp-tag">BERT / NLP</span><span class="exp-tag">CouchDB</span>
+            <span class="exp-tag" data-i18n="sk_mri">MRI Segmentation</span>
+            <span class="exp-tag">NLP-to-SQL</span><span class="exp-tag" data-i18n="sk_clinical">Clinical AI</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-date">Apr 2020 – Jul 2020<br><br>Bangkok, Thailand</div>
+        <div>
+          <div class="exp-company">BU CROCS — University of Bangkok</div>
+          <div class="exp-role" data-i18n="e3_role">AI / Computer Vision Intern</div>
+          <div class="exp-desc" data-i18n="e3_desc">Designed an interactive computer vision system to enhance visitor engagement in an exhibition space. Developed a real-time holographic display capable of detecting and tracking visitors using Python and OpenCV. Built the control interface with Tkinter.</div>
+          <div class="exp-tags">
+            <span class="exp-tag">OpenCV</span><span class="exp-tag">Computer Vision</span>
+            <span class="exp-tag">Python</span><span class="exp-tag" data-i18n="sk_holo">Holographic Display</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item reveal">
+        <div class="exp-date">2020<br><br>Dijon, France</div>
+        <div>
+          <div class="exp-company">Université Bourgogne Europe</div>
+          <div class="exp-role" data-i18n="e4_role">COVID-19 Drug Discovery Datathon</div>
+          <div class="exp-desc" data-i18n="e4_desc">Participated in a 3-day intensive datathon targeting in silico drug candidate identification using AI. Contributed to multi-source data extraction, harmonization, and pipeline preparation for a drug discovery workflow.</div>
+          <div class="exp-tags">
+            <span class="exp-tag" data-i18n="sk_drug">Drug Discovery</span>
+            <span class="exp-tag" data-i18n="sk_dataeng">Data Engineering</span>
+            <span class="exp-tag">AI Research</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Publication -->
+    <div class="reveal" style="margin-top:3rem;padding:2rem;background:var(--white);border:1px solid var(--border);border-left:3px solid var(--accent);">
+      <div class="exp-company" style="margin-bottom:0.5rem;" data-i18n="pub_label">Scientific Publication · 2024</div>
+      <p style="font-family:var(--serif);font-size:1.1rem;line-height:1.4;margin-bottom:0.75rem;">
+        Label-Free Optical Transmission Tomography for Direct Mycological Examination and Monitoring of Intracellular Dynamics
+      </p>
+      <p style="font-size:0.82rem;color:var(--muted);">
+        Dighab, A., Teston, E., Sautour, M., et al. — <em>Journal of Fungi</em>,
+        <a href="https://doi.org/10.3390/jof10110741" target="_blank" rel="noopener" style="color:var(--accent);text-decoration:underline;">DOI: 10.3390/jof10110741 ↗</a>
+      </p>
+      <p style="font-size:0.82rem;color:var(--muted);margin-top:0.5rem;" data-i18n="pub_contrib">
+        Contribution: data analysis, dataset preparation, digital tooling, and integration of YOLOv8 for automated cell type recognition.
+      </p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <p class="section-label reveal" data-i18n="nav_projects">Projects</p>
+    <h2 class="about-heading reveal" style="margin-bottom:3rem;">
+      <span data-i18n="proj_h1">Selected</span> <em data-i18n="proj_h2">work</em> <span data-i18n="proj_h3">on GitHub.</span>
+    </h2>
+    <div class="projects-grid">
+
+      <a class="project-card reveal" href="https://github.com/adwge99/Breast-Cancer-Project" target="_blank" rel="noopener">
+        <img src="images/breast-cancer.png" alt="Breast Cancer Detection" style="width:100%;height:180px;object-fit:cover;border-radius:2px;margin-bottom:1.25rem;">
+        <div class="project-lang">Jupyter Notebook · ML</div>
+        <div class="project-name" data-i18n="p1_name">Breast Cancer Prediction</div>
+        <div class="project-desc" data-i18n="p1_desc">Machine learning model for breast cancer classification, applying supervised learning to clinical diagnostic data.</div>
+        <div class="project-arrow"><span data-i18n="proj_view">View on GitHub</span> <span>→</span></div>
+      </a>
+
+      <a class="project-card reveal" href="https://github.com/adwge99/Convolutionnal-Neural-Network" target="_blank" rel="noopener">
+        <img src="images/cnn.png" alt="CNN Object Detector" style="width:100%;height:180px;object-fit:cover;border-radius:2px;margin-bottom:1.25rem;">
+        <div class="project-lang">Jupyter Notebook · Deep Learning</div>
+        <div class="project-name" data-i18n="p2_name">Convolutional Neural Network Object Detector</div>
+        <div class="project-desc" data-i18n="p2_desc">Image object detection algorithm using CNN architecture — exploring deep visual recognition from scratch.</div>
+        <div class="project-arrow"><span data-i18n="proj_view">View on GitHub</span> <span>→</span></div>
+      </a>
+
+      <a class="project-card reveal" href="https://github.com/adwge99/datathon-covidrug-19" target="_blank" rel="noopener">
+        <img src="images/datathon19.png" alt="COVID-19 Drug Discovery" style="width:100%;height:180px;object-fit:cover;border-radius:2px;margin-bottom:1.25rem;">
+        <div class="project-lang">Python · Drug Discovery</div>
+        <div class="project-name" data-i18n="p3_name">COVID-19 Drug Discovery Datathon</div>
+        <div class="project-desc" data-i18n="p3_desc">In silico drug candidate identification using AI-driven data pipelines. Built during an intensive 3-day challenge at Université de Bourgogne.</div>
+        <div class="project-arrow"><span data-i18n="proj_view">View on GitHub</span> <span>→</span></div>
+      </a>
+
+      <a class="project-card reveal" href="https://github.com/adwge99/Krigeage_PFAS" target="_blank" rel="noopener">
+        <img src="https://github.com/adwge99/Krigeage_PFAS/raw/main/data/image.png" alt="Krigeage PFAS" style="width:100%;height:180px;object-fit:cover;border-radius:2px;margin-bottom:1.25rem;">
+        <div class="project-lang">Jupyter Notebook · Geostatistics</div>
+        <div class="project-name" data-i18n="p4_name">PFAS Contamination Spatial Modelling</div>
+        <div class="project-desc" data-i18n="p4_desc">Geostatistical analysis of PFAS pollutant distribution across Europe using kriging techniques on 131 CNRS datasets. Identifies high-risk contamination zones with Power BI and Météo France data integration.</div>
+        <div class="project-arrow"><span data-i18n="proj_view">View on GitHub</span> <span>→</span></div>
+      </a>
+
+      <a class="project-card reveal" href="https://github.com/adwge99" target="_blank" rel="noopener" style="border-style:dashed;background:transparent;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:200px;">
+        <div class="project-lang" data-i18n="proj_more">More coming soon</div>
+        <div class="project-name" style="color:var(--muted);font-size:1rem;" data-i18n="proj_explore">Explore all repos</div>
+        <div class="project-arrow" style="margin-top:1rem;">github.com/adwge99 <span>→</span></div>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <h2 class="contact-heading reveal">
+      <span data-i18n="contact_h1">Let's build</span><br><em data-i18n="contact_h2">something together.</em>
+    </h2>
+    <p class="contact-sub reveal" data-i18n="contact_sub">I'm open to research collaborations, AI engineering roles, and interesting problems worth solving.</p>
+    <div class="contact-links reveal">
+      <a href="https://github.com/adwge99" class="btn btn-primary" target="_blank" rel="noopener">GitHub</a>
+      <a href="mailto:dighababdellah@gmail.com" class="btn btn-outline" data-i18n="contact_email">Email Me</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2025 Abdellah Dighab</span>
+    <span data-i18n="footer_built">Built for GitHub Pages</span>
+  </footer>
+
+  <script>
+  // ── TRANSLATIONS ──────────────────────────────────────────────────────────
+  const i18n = {
+    en: {
+      nav_about:"About", nav_skills:"Skills", nav_experience:"Experience",
+      nav_projects:"Projects", nav_contact:"Contact",
+      hero_eyebrow:"AI Engineer · Researcher · Builder",
+      hero_tagline:"Building intelligent systems where mathematics meets real-world impact — from geological AI to clinical imaging, across three continents.",
+      hero_cta_projects:"View Projects", hero_cta_contact:"Get in Touch",
+      hero_scroll:"Scroll to explore",
+      about_h1:"Curious mind.", about_h2:"Rigorous", about_h3:"builder.",
+      stat_exp:"Years of experience", stat_countries:"Countries worked in",
+      stat_pub:"Scientific publication", stat_problems:"Problems to solve",
+      about_p1:"I'm an AI Engineer driven by a deep passion for mathematics, computing, and their applications to health and science. I thrive at the intersection of research and engineering — turning complex data into meaningful, deployable solutions.",
+      about_p2:"From developing real-time ML systems for oil drilling operations in France, to working on neurological imaging at Brigham and Women's Hospital in Boston, I've had the privilege of applying AI where precision genuinely matters.",
+      about_p3:"I believe the best innovations come from collaboration — interdisciplinary, multicultural, and grounded in curiosity. I'm always looking to contribute to discoveries that change how we work, heal, and understand the world.",
+      about_github:"GitHub Profile →",
+      skills_label:"Skills & Technologies", skills_h1:"A full-stack", skills_h2:"AI toolkit.",
+      sk_ml:"Machine Learning", sk_data:"Data & Engineering", sk_viz:"Visualization & Apps", sk_domains:"Domains",
+      sk_pipelines:"Data Pipelines", sk_realtime:"Real-time Processing",
+      sk_clinical:"Clinical AI", sk_geo:"Geoscience AI", sk_drug:"Drug Discovery",
+      sk_mri:"MRI Segmentation", sk_holo:"Holographic Systems", sk_dataeng:"Data Engineering",
+      e1_role:"AI Engineer — Junior Lead Software Engineer",
+      e1_desc:"Led the development of an AI system applied to MudLogging, including ML models for directional drilling prediction and real-time geological pattern recognition. Designed and deployed a full-stack MudLogging visualization platform across three active drilling sites. Built HICA, a 3D geological web visualization app powered by Open3D, Python, and MySQL.",
+      e2_role:"AI Research Intern — Clinical Data",
+      e2_desc:"Contributed to a multiple sclerosis (MS) lesion tracking workflow, improving MRI segmentation precision through expert-validated crowd contributions. Conducted a feasibility study for an NLP-to-SQL system (SPINE) enabling clinicians to query databases in natural language. Used Python, CouchDB, JSON, and BERT in a fully remote collaborative environment.",
+      e3_role:"AI / Computer Vision Intern",
+      e3_desc:"Designed an interactive computer vision system to enhance visitor engagement in an exhibition space. Developed a real-time holographic display capable of detecting and tracking visitors using Python and OpenCV. Built the control interface with Tkinter.",
+      e4_role:"COVID-19 Drug Discovery Datathon",
+      e4_desc:"Participated in a 3-day intensive datathon targeting in silico drug candidate identification using AI. Contributed to multi-source data extraction, harmonization, and pipeline preparation for a drug discovery workflow.",
+      pub_label:"Scientific Publication · 2024",
+      pub_contrib:"Contribution: data analysis, dataset preparation, digital tooling, and integration of YOLOv8 for automated cell type recognition.",
+      proj_h1:"Selected", proj_h2:"work", proj_h3:"on GitHub.",
+      p1_name:"Breast Cancer Prediction",
+      p1_desc:"Machine learning model for breast cancer classification, applying supervised learning to clinical diagnostic data.",
+      p2_name:"Convolutional Neural Network Object Detector",
+      p2_desc:"Image object detection algorithm using CNN architecture — exploring deep visual recognition from scratch.",
+      p3_name:"COVID-19 Drug Discovery Datathon",
+      p3_desc:"In silico drug candidate identification using AI-driven data pipelines. Built during an intensive 3-day challenge at Université de Bourgogne.",
+      p4_name:"PFAS Contamination Spatial Modelling",
+      p4_desc:"Geostatistical analysis of PFAS pollutant distribution across Europe using kriging techniques on 131 CNRS datasets. Identifies high-risk contamination zones with Power BI and Météo France data integration.",
+      proj_view:"View on GitHub", proj_more:"More coming soon", proj_explore:"Explore all repos",
+      contact_h1:"Let's build", contact_h2:"something together.",
+      contact_sub:"I'm open to research collaborations, AI engineering roles, and interesting problems worth solving.",
+      contact_email:"Email Me", footer_built:"Built for GitHub Pages"
+    },
+    fr: {
+      nav_about:"À propos", nav_skills:"Compétences", nav_experience:"Expérience",
+      nav_projects:"Projets", nav_contact:"Contact",
+      hero_eyebrow:"Ingénieur IA · Chercheur · Développeur",
+      hero_tagline:"Construire des systèmes intelligents là où les mathématiques rencontrent l'impact réel — de l'IA géologique à l'imagerie clinique, sur trois continents.",
+      hero_cta_projects:"Voir les projets", hero_cta_contact:"Me contacter",
+      hero_scroll:"Défiler pour explorer",
+      about_h1:"Esprit curieux.", about_h2:"Rigoureux", about_h3:"bâtisseur.",
+      stat_exp:"Années d'expérience", stat_countries:"Pays travaillés",
+      stat_pub:"Publication scientifique", stat_problems:"Problèmes à résoudre",
+      about_p1:"Je suis Ingénieur IA animé par une profonde passion pour les mathématiques, l'informatique et leurs applications à la santé et à la science. Je m'épanouis à l'intersection de la recherche et de l'ingénierie — transformer des données complexes en solutions concrètes et déployables.",
+      about_p2:"Du développement de systèmes ML temps réel pour le forage pétrolier en France, au travail sur l'imagerie neurologique au Brigham and Women's Hospital de Boston, j'ai eu le privilège d'appliquer l'IA là où la précision compte vraiment.",
+      about_p3:"Je crois que les meilleures innovations naissent de la collaboration — interdisciplinaire, multiculturelle et fondée sur la curiosité. Je cherche toujours à contribuer à des découvertes qui changent notre façon de travailler, de soigner et de comprendre le monde.",
+      about_github:"Profil GitHub →",
+      skills_label:"Compétences & Technologies", skills_h1:"Une boîte à outils", skills_h2:"IA complète.",
+      sk_ml:"Apprentissage automatique", sk_data:"Données & Ingénierie", sk_viz:"Visualisation & Applications", sk_domains:"Domaines",
+      sk_pipelines:"Pipelines de données", sk_realtime:"Traitement temps réel",
+      sk_clinical:"IA Clinique", sk_geo:"IA Géosciences", sk_drug:"Découverte de médicaments",
+      sk_mri:"Segmentation IRM", sk_holo:"Systèmes holographiques", sk_dataeng:"Ingénierie des données",
+      e1_role:"Ingénieur IA — Lead Logiciel Junior",
+      e1_desc:"Pilotage du développement d'un système d'IA appliqué au MudLogging, incluant des modèles ML pour la prédiction du forage directionnel et la reconnaissance de motifs géologiques en temps réel. Conception et déploiement d'une plateforme complète de visualisation sur trois sites de forage actifs. Développement de HICA, une application web de visualisation géologique 3D basée sur Open3D, Python et MySQL.",
+      e2_role:"Stagiaire Recherche IA — Données Cliniques",
+      e2_desc:"Contribution au workflow de suivi des lésions de la sclérose en plaques (SEP), améliorant la précision de la segmentation IRM via des contributions validées par des experts. Étude de faisabilité d'un système NLP-to-SQL (SPINE) permettant aux cliniciens d'interroger des bases de données en langage naturel. Utilisation de Python, CouchDB, JSON et BERT en environnement collaboratif à distance.",
+      e3_role:"Stagiaire IA / Vision par Ordinateur",
+      e3_desc:"Conception d'un système interactif basé sur la vision par ordinateur pour améliorer l'engagement des visiteurs dans un espace d'exposition. Développement d'un affichage holographique capable de détecter et suivre les visiteurs en temps réel avec Python et OpenCV. Création de l'interface avec Tkinter.",
+      e4_role:"Datathon Découverte de Médicaments COVID-19",
+      e4_desc:"Participation à un datathon intensif de 3 jours visant à identifier des candidats médicaments via des méthodes in silico basées sur l'IA. Contribution à l'extraction, l'harmonisation et la préparation de données multi-sources pour un pipeline de drug discovery.",
+      pub_label:"Publication Scientifique · 2024",
+      pub_contrib:"Contribution : analyse des données, préparation des jeux de données, outils numériques et intégration de YOLOv8 pour la reconnaissance automatique de types cellulaires.",
+      proj_h1:"Travaux", proj_h2:"sélectionnés", proj_h3:"sur GitHub.",
+      p1_name:"Prédiction du Cancer du Sein",
+      p1_desc:"Modèle de machine learning pour la classification du cancer du sein, appliquant l'apprentissage supervisé à des données diagnostiques cliniques.",
+      p2_name:"Détecteur d'Objets par Réseau Convolutif",
+      p2_desc:"Algorithme de détection d'objets via architecture CNN — exploration de la reconnaissance visuelle profonde.",
+      p3_name:"Datathon Découverte de Médicaments COVID-19",
+      p3_desc:"Identification in silico de candidats médicaments avec des pipelines IA. Réalisé lors d'un challenge de 3 jours à l'Université de Bourgogne.",
+      p4_name:"Modélisation Spatiale de la Contamination PFAS",
+      p4_desc:"Analyse géostatistique de la distribution des PFAS en Europe via krigeage sur 131 jeux de données du CNRS. Identification des zones à risque avec Power BI et données Météo France.",
+      proj_view:"Voir sur GitHub", proj_more:"Bientôt disponible", proj_explore:"Tous les dépôts",
+      contact_h1:"Construisons", contact_h2:"quelque chose ensemble.",
+      contact_sub:"Je suis ouvert aux collaborations de recherche, aux postes d'ingénieur IA et à tout problème intéressant à résoudre.",
+      contact_email:"M'écrire", footer_built:"Fait pour GitHub Pages"
+    },
+    it: {
+      nav_about:"Chi sono", nav_skills:"Competenze", nav_experience:"Esperienza",
+      nav_projects:"Progetti", nav_contact:"Contatti",
+      hero_eyebrow:"Ingegnere IA · Ricercatore · Sviluppatore",
+      hero_tagline:"Costruire sistemi intelligenti dove la matematica incontra l'impatto reale — dall'IA geologica all'imaging clinico, su tre continenti.",
+      hero_cta_projects:"Vedi i progetti", hero_cta_contact:"Contattami",
+      hero_scroll:"Scorri per esplorare",
+      about_h1:"Mente curiosa.", about_h2:"Rigoroso", about_h3:"costruttore.",
+      stat_exp:"Anni di esperienza", stat_countries:"Paesi lavorati",
+      stat_pub:"Pubblicazione scientifica", stat_problems:"Problemi da risolvere",
+      about_p1:"Sono un Ingegnere IA spinto da una profonda passione per la matematica, l'informatica e le loro applicazioni alla salute e alla scienza. Prospero all'incrocio tra ricerca e ingegneria — trasformando dati complessi in soluzioni concrete e distribuibili.",
+      about_p2:"Dallo sviluppo di sistemi ML in tempo reale per le operazioni di perforazione petrolifera in Francia, al lavoro sull'imaging neurologico al Brigham and Women's Hospital di Boston, ho avuto il privilegio di applicare l'IA dove la precisione conta davvero.",
+      about_p3:"Credo che le migliori innovazioni nascano dalla collaborazione — interdisciplinare, multiculturale e fondata sulla curiosità. Cerco sempre di contribuire a scoperte che cambiano il modo in cui lavoriamo, curiamo e comprendiamo il mondo.",
+      about_github:"Profilo GitHub →",
+      skills_label:"Competenze & Tecnologie", skills_h1:"Un toolkit IA", skills_h2:"completo.",
+      sk_ml:"Apprendimento automatico", sk_data:"Dati & Ingegneria", sk_viz:"Visualizzazione & App", sk_domains:"Domini",
+      sk_pipelines:"Pipeline di dati", sk_realtime:"Elaborazione in tempo reale",
+      sk_clinical:"IA Clinica", sk_geo:"IA Geoscienze", sk_drug:"Scoperta di farmaci",
+      sk_mri:"Segmentazione MRI", sk_holo:"Sistemi olografici", sk_dataeng:"Ingegneria dei dati",
+      e1_role:"Ingegnere IA — Junior Lead Software Engineer",
+      e1_desc:"Guida dello sviluppo di un sistema IA applicato al MudLogging, inclusi modelli ML per la previsione della perforazione direzionale e il riconoscimento di pattern geologici in tempo reale. Progettazione e distribuzione di una piattaforma di visualizzazione completa su tre siti di perforazione attivi. Sviluppo di HICA, un'app web di visualizzazione geologica 3D basata su Open3D, Python e MySQL.",
+      e2_role:"Stagista Ricerca IA — Dati Clinici",
+      e2_desc:"Contributo al workflow di monitoraggio delle lesioni della sclerosi multipla (SM), migliorando la precisione della segmentazione MRI tramite contributi validati da esperti. Studio di fattibilità per un sistema NLP-to-SQL (SPINE) che consente ai clinici di interrogare database in linguaggio naturale. Utilizzo di Python, CouchDB, JSON e BERT in ambiente collaborativo remoto.",
+      e3_role:"Stagista IA / Computer Vision",
+      e3_desc:"Progettazione di un sistema interattivo basato sulla computer vision per migliorare il coinvolgimento dei visitatori in uno spazio espositivo. Sviluppo di un display olografico in tempo reale con Python e OpenCV. Creazione dell'interfaccia con Tkinter.",
+      e4_role:"Datathon Scoperta di Farmaci COVID-19",
+      e4_desc:"Partecipazione a un datathon intensivo di 3 giorni per l'identificazione in silico di candidati farmaci tramite IA. Contributo all'estrazione, armonizzazione e preparazione di dati multi-sorgente per un pipeline di drug discovery.",
+      pub_label:"Pubblicazione Scientifica · 2024",
+      pub_contrib:"Contributo: analisi dei dati, preparazione dei dataset, strumenti digitali e integrazione di YOLOv8 per il riconoscimento automatico dei tipi cellulari.",
+      proj_h1:"Lavori", proj_h2:"selezionati", proj_h3:"su GitHub.",
+      p1_name:"Previsione del Cancro al Seno",
+      p1_desc:"Modello di machine learning per la classificazione del cancro al seno, applicando l'apprendimento supervisionato a dati diagnostici clinici.",
+      p2_name:"Rilevatore di Oggetti con Rete Neurale Convoluzionale",
+      p2_desc:"Algoritmo di rilevamento oggetti tramite architettura CNN — esplorazione del riconoscimento visivo profondo.",
+      p3_name:"Datathon Scoperta di Farmaci COVID-19",
+      p3_desc:"Identificazione in silico di candidati farmaci con pipeline IA. Realizzato durante una sfida di 3 giorni all'Università di Borgogna.",
+      p4_name:"Modellazione Spaziale della Contaminazione da PFAS",
+      p4_desc:"Analisi geostatistica della distribuzione dei PFAS in Europa tramite tecniche di kriging su 131 dataset del CNRS. Identifica le zone ad alto rischio con Power BI e dati Météo France.",
+      proj_view:"Vedi su GitHub", proj_more:"Prossimamente", proj_explore:"Tutti i repository",
+      contact_h1:"Costruiamo", contact_h2:"qualcosa insieme.",
+      contact_sub:"Sono aperto a collaborazioni di ricerca, ruoli di ingegneria IA e problemi interessanti da risolvere.",
+      contact_email:"Scrivimi", footer_built:"Fatto per GitHub Pages"
+    }
+  };
+
+  function setLang(lang) {
+    const t = i18n[lang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key] !== undefined) el.textContent = t[key];
+    });
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.textContent.toLowerCase() === lang);
+    });
+    document.documentElement.lang = lang;
+  }
+
+  // Scroll reveal
+  document.body.classList.add('js-loaded');
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        entry.target.style.transitionDelay = `${(i % 3) * 0.1}s`;
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
